@@ -1,57 +1,94 @@
-#include <array>
 #include <iostream>
 #include <limits>
 #include <pico/error.h>
 #include <pico/stdio.h>
 #include <pico/stdlib.h>
 #include <pico/time.h>
-constexpr unsigned MAGIC_NUMBER = 10;
-int main() {
-  stdio_init_all();
-  int c{};
+constexpr unsigned MAX_ARRAY_SIZE = 5;
+
+struct dataHolder {
   int current{0};
-  int dataSize{0};
-  int data[1000]{};
+  unsigned dataSize{0};
+  int data[MAX_ARRAY_SIZE]{};
   int sum{0};
   int min = std::numeric_limits<int>::max();
-  double avg{0};
   int max = std::numeric_limits<int>::min();
+};
+
+void calculator(int input, dataHolder &currentStats);
+
+void startOver(dataHolder &currentStats);
+
+void showStats(const dataHolder &currentStats);
+
+int main() {
+  stdio_init_all();
   sleep_ms(10000);
-  std::cout << "Enter a number, S to show stats or C to start over: " << '\n';
+  int input{};
+  dataHolder stats;
+  std::cout << "Enter a number, S to show stats or c to start over: " << '\n';
   while (true) {
-    c = getchar_timeout_us(1000000);
-    if (c == PICO_ERROR_TIMEOUT) {
-      continue;
-    } else if (c >= '0' && c <= '9') {
-      current = current * MAGIC_NUMBER + (c - '0');
-    } else if (c == '\r' || c == '\n') {
-      if (dataSize == 999) {
-        std::cout << "Array too big. Please restart program. \n";
-        break;
-      }
-      data[dataSize] = current;
-      if (current > max) {
-        max = current;
-      }
-      if (current < min) {
-        min = current;
-      }
-      sum += current;
-      std::cout << current << '\n';
-      current = 0;
-      dataSize++;
-    } else if (c == 's') {
-      avg = static_cast<double>(sum) / dataSize;
-      std::cout << "The Sum is: " << sum << " the average is: " << avg
-                << " Size: " << dataSize << " Min: " << min << " Max: " << max
-                << '\n';
-    } else if (c == 'c') {
-      current = 0;
-      dataSize = 0;
-      sum = 0;
-      min = std::numeric_limits<int>::max();
-      avg = 0;
-      max = 0;
+    input = getchar_timeout_us(1000000);
+    calculator(input, stats);
+  }
+}
+
+void calculator(int input, dataHolder &currentStats) {
+  if (input == PICO_ERROR_TIMEOUT) {
+    return;
+
+  } else if (input >= '0' && input <= '9') {
+    int digit = input - '0';
+    if (currentStats.current > (std::numeric_limits<int>::max() - digit) / 10) {
+      std::cout << "Number exceeds numeric_limits, reseting to 0...\n";
+      currentStats.current = 0;
+    } else {
+      currentStats.current = currentStats.current * 10 + digit;
     }
+  } else if (input == '\r' || input == '\n') {
+    if (currentStats.dataSize == MAX_ARRAY_SIZE) {
+      std::cout << "Array too big. To clear the array press 'c'. \n";
+      currentStats.current = 0;
+      return;
+    }
+    if (currentStats.current == 0) {
+      std::cout << "Please enter a number! \n";
+    } else {
+      currentStats.data[currentStats.dataSize] = currentStats.current;
+      if (currentStats.current > currentStats.max) {
+        currentStats.max = currentStats.current;
+      }
+      if (currentStats.current < currentStats.min) {
+        currentStats.min = currentStats.current;
+      }
+      currentStats.sum += currentStats.current;
+      std::cout << currentStats.current << '\n';
+      currentStats.current = 0;
+      currentStats.dataSize++;
+    }
+  } else if (input == 's') {
+
+    showStats(currentStats);
+  } else if (input == 'c') {
+    startOver(currentStats);
+  }
+}
+
+void startOver(dataHolder &currentStats) {
+  std::cout << "Starting Over.... ";
+  dataHolder newStats{};
+  currentStats = newStats;
+}
+
+void showStats(const dataHolder &currentStats) {
+  if (currentStats.dataSize == 0) {
+    std::cout << "Enter numbers before checking stats! ";
+  } else {
+    double avg = static_cast<double>(currentStats.sum) / currentStats.dataSize;
+    std::cout << "The Sum is: " << currentStats.sum
+              << " the average is: " << avg
+              << " Size: " << currentStats.dataSize
+              << " Min: " << currentStats.min << " Max: " << currentStats.max
+              << '\n';
   }
 }
