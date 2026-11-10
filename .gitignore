@@ -1,0 +1,30 @@
+# CMake build output
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+
+# Firmware artifacts
+*.uf2
+*.elf
+*.elf.map
+*.bin
+*.hex
+*.dis
+*.o
+*.a
+
+# clangd
+compile_commands.json
+.cache/
+
+# Editors
+*.swp
+*~
+
+# macOS
+.DS_Store
+
+# Claude Code files
+.claude/
+CLAUDE.md
