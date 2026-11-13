@@ -28,3 +28,6 @@ compile_commands.json
 # Claude Code files
 .claude/
 CLAUDE.md
+
+# Mac-side scratch binaries
+scratch/sizes
