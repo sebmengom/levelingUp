@@ -8,7 +8,7 @@ Every level is a project I build myself. Each folder has its own `devlog.md` wit
 | Level | Project | Fundamentals | Status |
 |---|---|---|---|
 | [0](lvl0/) | Tick counter over USB | Toolchain, CMake from scratch, build vs. run time | ✅ Done |
-| [1](lvl1/) | Serial calculator | Fixed-width types, overflow, signed/unsigned, `char` as a number, `struct`, pass by value / `&` / `const&`, `constexpr` | 🟡 Devlog pending |
+| [1](lvl1/) | Serial calculator | Fixed-width types, overflow, signed/unsigned, `char` as a number, `struct`, pass by value / `&` / `const&`, `constexpr` |  ✅ Done|
 | 2 | Binary counter on 4 LEDs (registers, no `gpio_put`) | Bitwise ops, memory-mapped I/O, reading the datasheet. Ohm's law, LED resistors | ⬜ |
 | 3 | Pico voltmeter (pot + photoresistor) | ADC, non-blocking timing. Voltage dividers, pull-ups | ⬜ |
 | 4 | Combination lock with 4 buttons | State machines, `enum class`. RC hardware debounce | ⬜ |
