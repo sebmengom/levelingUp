@@ -21,16 +21,16 @@ int main() {
   gpio_init_mask(PIN_MASK);
   *oe_set = PIN_MASK;
 
-  uint32_t currentLed = (1u << 14);
+  uint32_t counter = 0;
 
   while (true) {
     *out_clr = PIN_MASK;
     sleep_ms(1000);
-    *out_set = currentLed;
+    *out_set = counter << 14;
     sleep_ms(1000);
-    currentLed <<= 1;
-    if (currentLed > (1u << 17)) {
-      currentLed = (1u << 14);
+    counter++;
+    if (counter > 15) {
+      counter = 0;
     }
   }
 }
