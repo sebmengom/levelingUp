@@ -12,7 +12,7 @@ project(lvl2 C CXX ASM)
 
 pico_sdk_init()
 
-add_executable(lvl2 main.cpp)
+add_executable(lvl2 main.cpp ledControl.cpp)
 
 target_link_libraries(lvl2 pico_stdlib)
 
