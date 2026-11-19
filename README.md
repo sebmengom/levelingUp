@@ -10,8 +10,8 @@ Every level is a project I build myself. Each folder has its own `devlog.md` wit
 | [0](lvl0/) | Tick counter over USB | Toolchain, CMake from scratch, build vs. run time | `main`, `stdio`, `sleep_ms` | ✅ Done |
 | [1](lvl1/) | Serial calculator | Fixed-width types, overflow, signed/unsigned, `char` as a number | `struct`, pass by value / `&` / `const&`, `constexpr` | ✅ Done |
 | [2](lvl2/) | Binary counter on 4 LEDs + XOR blink + `GPIO_IN` readback (registers, no `gpio_put`) | Bitwise ops (`\|` `&` `^` `<<` `>>`), memory-mapped I/O, SET/CLR/XOR, `GPIO_OE`, `GPIO_IN`, reading the datasheet. Ohm's law, LED resistors | pointers, `volatile`, `reinterpret_cast`, `std::bitset` | ✅ Done |
-| 2.5 | Refactor lvl2 | Same hardware, cleaner code | `class`, constructors, `private` | ⬜ Next |
-| 3 | Pico voltmeter (pot + photoresistor) | ADC, non-blocking timing. Voltage dividers, pull-ups | more classes, `namespace` | ⬜ |
+| [2.5](lvl2/) | Refactor lvl2 into a `LedControl` class | Same hardware, cleaner code. Header/source split, linker errors | `class`, constructor, `private`/`public`, `.h`/`.cpp`, `ClassName::`, `#pragma once` | ✅ Done |
+| 3 | Pico voltmeter (pot + photoresistor) | ADC, non-blocking timing. Voltage dividers, pull-ups | more classes, `namespace` | ⬜ Next |
 | 4 | Combination lock with 4 buttons | State machines. RC hardware debounce | `enum class`, `switch` | ⬜ |
 | 5 | Reaction-time game with IRQs | Interrupts, shared data | passing functions (callbacks) | ⬜ |
 | 6 | Buzzer melody + servo | Timers, PWM math. Powering loads safely | | ⬜ |
