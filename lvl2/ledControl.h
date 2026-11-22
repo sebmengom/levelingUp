@@ -4,6 +4,8 @@
 #include "pico/stdlib.h"
 #include <bitset>
 #include <iostream>
+#include <pico/time.h>
+#include <pico/types.h>
 
 constexpr uint32_t SIO_B = 0xd0000000;
 constexpr uint32_t GPIO_OE_SET_OFFSET = 0x024;
@@ -33,6 +35,10 @@ private:
 
   const uint32_t PIN_MASK = XOR_MASK | COUNTER_MASK;
   uint32_t lecture{};
+
+  absolute_time_t lastChangeHB = get_absolute_time();
+
+  absolute_time_t lastChangeCounter = get_absolute_time();
 
 public:
   LedControl();
