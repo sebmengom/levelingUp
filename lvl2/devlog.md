@@ -48,4 +48,37 @@ I also learned about the registers that control the pins:
 - **Getting just my 4 bits.** `>> 14` shifts everything 14 boxes to the right and the boxes 0 to 13 fall off. `& 0xF` is a filter that keeps boxes 0 to 3 and cuts off the rest (like the GP18 bit).
 - **Why the XOR register is useful.** I send the same mask every time and the chip flips the pin by itself, so I don't need a variable, an `if`, or extra operations to remember if the LED is on.
 
+## Update: removing `sleep_ms`
+
+### What I did
+I replaced both `sleep_ms(1000)` with clock checks. `sleep_ms` stops the Pico on that line for a second and then it continues. Now the `while (true)` keeps looping and checking the clock (`get_absolute_time()`, microseconds since the Pico turned on). It works like a scheduler, which will help for the RTOS.
+
+The pattern:
+```cpp
+if (get_absolute_time() - lastChange > 1000000) {   // 1,000,000 us = 1 s
+    // do the thing
+    lastChange = get_absolute_time();               // write down the time
+}
+```
+
+I used two variables, `lastChangeHB` (GP18 heartbeat) and `lastChangeCounter` (counter on GP14 to GP17), so each one controls its own condition.
+
+### Bugs
+#### 5. Looper ran only once
+- **Symptom:** nothing happened after the first moment.
+- **Cause:** I removed the `while (true)` together with the sleeps. Without the loop the clock is checked once, the function returns, and `main` ends.
+- **Fix:** put the `while (true)` back. Now the loop itself is the waiting.
+
+#### 6. Subtraction in the wrong order
+- **Cause:** `lastChange - now` instead of `now - lastChange`. Only `now - last` says how much time has passed.
+
+#### 7. Second `if` updated the wrong variable
+- **Symptom:** the counter went crazy.
+- **Cause:** the counter `if` wrote `lastChangeHB = ...` instead of `lastChangeCounter`. `lastChangeCounter` never changed, so `now - lastChangeCounter` kept growing, was always bigger than 1,000,000, and the `if` ran on every single loop (thousands of times per second).
+- **Fix:** each `if` updates its own variable.
+
+### What I learned
+- `sleep_ms` freezes everything. Checking the clock lets the loop keep going and do other things between actions.
+- One "last time" variable per action, so each one has its own clock and I can change one speed without touching the other.
+
 # NEXT: LVL3

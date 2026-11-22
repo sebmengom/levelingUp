@@ -11,11 +11,12 @@ void LedControl::looper(int &counter) {
 
     if (get_absolute_time() - LedControl::lastChangeHB > 1000000) {
       xorBlinker();
-      *out_clr = COUNTER_MASK;
+
       LedControl::lastChangeHB = get_absolute_time();
     }
 
     if (get_absolute_time() - LedControl::lastChangeCounter > 1000000) {
+      *out_clr = COUNTER_MASK;
       *out_set = counter << 14;
       counter++;
       if (counter > 15) {
