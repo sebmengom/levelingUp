@@ -33,7 +33,7 @@ void adcStart(uint adcPin, uint inputPin) {
     std::cout << "Enter a valid pin!" << '\n';
     return;
   }
-  if (inputPin > 3 || inputPin < 0) {
+  if (inputPin > 3) {
     std::cout << "Invalid input pin!" << '\n';
     return;
   }
