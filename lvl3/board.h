@@ -1,6 +1,8 @@
 #pragma once
+#include "hardware/adc.h"
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"
+#include <iostream>
 #include <pico/time.h>
 #include <pico/types.h>
 
@@ -20,3 +22,5 @@ public:
 };
 
 void initPins(const uint pins[], int count);
+
+void adcStart(uint adcPin, uint inputPin);

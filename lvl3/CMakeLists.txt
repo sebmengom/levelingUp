@@ -12,7 +12,7 @@ project(lvl3 C CXX ASM)
 
 pico_sdk_init()
 
-add_executable(lvl3 main.cpp starter.cpp)
+add_executable(lvl3 main.cpp board.cpp potTracker.cpp)
 
 target_link_libraries(lvl3 pico_stdlib hardware_adc)
 

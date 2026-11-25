@@ -1,4 +1,4 @@
-#include "starter.h"
+#include "board.h"
 
 volatile uint32_t *out_xor =
     reinterpret_cast<volatile uint32_t *>(SIO_B + GPIO_OUT_XOR);
@@ -26,4 +26,18 @@ void initPins(const uint pins[], int count) {
   }
   gpio_init_mask(mask);
   *oe_set = mask;
+}
+
+void adcStart(uint adcPin, uint inputPin) {
+  if (adcPin > 28 || adcPin < 26) {
+    std::cout << "Enter a valid pin!" << '\n';
+    return;
+  }
+  if (inputPin > 3 || inputPin < 0) {
+    std::cout << "Invalid input pin!" << '\n';
+    return;
+  }
+
+  adc_gpio_init(adcPin);
+  adc_select_input(inputPin);
 }
