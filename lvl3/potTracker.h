@@ -1,11 +1,12 @@
 #pragma once
-#include "hardware/adc.h"
 #include "board.h"
+#include "hardware/adc.h"
 #include <cstdint>
 #include <iostream>
 #include <pico/stdio.h>
 #include <pico/time.h>
 #include <pico/types.h>
+#include <string>
 
 constexpr uint32_t GPIO_OUT_SET_OFFSET = 0x014;
 constexpr uint32_t GPIO_OUT_CLR_OFFSET = 0x018;
@@ -17,8 +18,10 @@ private:
   absolute_time_t lastChangeCounter{};
   int ledsOn{0};
   uint input{};
+  std::string type{};
+  bool showBar{};
 
 public:
-  PotTracker(uint adcPin, uint inputPin);
+  PotTracker(uint adcPin, uint inputPin, std::string type, bool showBar);
   void potLevel();
 };
