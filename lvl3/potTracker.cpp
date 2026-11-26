@@ -34,8 +34,7 @@ void PotTracker::potLevel() {
       *out_set = strip << 14;
     } else if (type == "ldr") {
       if (raw < 1900) {
-        *out_clr = LDR_MASK;
-        *out_set = 1u << 19;
+        clearMaskShiftBit(LDR_MASK, 19);
       } else {
         *out_clr = LDR_MASK;
       }
@@ -43,17 +42,19 @@ void PotTracker::potLevel() {
       int mV = (raw * 3300) / 4095;
       int celsius = (mV / 10) - 6;
       if (celsius <= 19) {
-        *out_clr = TEMP_MASK;
-        *out_set = 1u << 10;
+        clearMaskShiftBit(TEMP_MASK, 10);
       } else if (celsius >= 22) {
-        *out_clr = TEMP_MASK;
-        *out_set = 1u << 11;
+        clearMaskShiftBit(TEMP_MASK, 12);
       } else {
-        *out_clr = TEMP_MASK;
-        *out_set = 1u << 12;
+        clearMaskShiftBit(TEMP_MASK, 11);
       }
     }
     std::cout << type << ": " << raw << '\n';
     lastChangeCounter = get_absolute_time();
   }
+}
+
+void clearMaskShiftBit(const uint32_t mask, uint pin) {
+  *out_clr = mask;
+  *out_set = 1u << pin;
 }

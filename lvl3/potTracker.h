@@ -27,3 +27,5 @@ public:
   PotTracker(uint adcPin, uint inputPin, std::string type, bool showBar);
   void potLevel();
 };
+
+void clearMaskShiftBit(const uint32_t mask, uint pin);

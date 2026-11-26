@@ -1,4 +1,5 @@
 #include "board.h"
+#include <cstdint>
 
 volatile uint32_t *out_xor =
     reinterpret_cast<volatile uint32_t *>(SIO_B + GPIO_OUT_XOR);
@@ -40,4 +41,4 @@ void adcStart(uint adcPin, uint inputPin) {
 
   adc_gpio_init(adcPin);
   adc_select_input(inputPin);
-}
+};
